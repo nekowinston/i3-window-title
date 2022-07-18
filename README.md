@@ -1,4 +1,6 @@
-# i3-window-title
+<h3 align="center">
+  i3-window-title
+</h3>
 
 <p align="center">
   <img alt="License: MIT" src="https://img.shields.io/github/license/nekowinston/i3-window-title">
@@ -22,6 +24,12 @@ Move it to one of your `bin` directories, which is in your `$PATH`.
 The config file is YAML format, located in `~/.config/window_titles.yml`:
 
 ```yaml
+# the icon to fall back to, if there is no mapping
+default_icon: ﬓ
+# spaces to insert between the icon & window title
+padding: 1
+
+mappings:
 # class is the WM_CLASS, which you can get via xprop.
 - class: org.wezfurlong.wezterm
   title: WezTerm
