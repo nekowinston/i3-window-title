@@ -1,6 +1,6 @@
 module i3-window-title
 
-go 1.17
+go 1.18
 
 require (
 	go.i3wm.org/i3/v4 v4.18.0
