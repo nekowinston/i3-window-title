@@ -1,11 +1,11 @@
 # i3-window-title
 
-<div style="text-align: center;">
+<p align="center">
   <img alt="License: MIT" src="https://img.shields.io/github/license/nekowinston/i3-window-title">
   <img alt="Go version" src="https://img.shields.io/github/go-mod/go-version/nekowinston/i3-window-title">
   <img alt="Downloads" src="https://img.shields.io/github/downloads/nekowinston/i3-window-title/total">
   <img alt="goreleaser" src="https://github.com/nekowinston/i3-window-title/actions/workflows/release.yml/badge.svg">
-</div>
+</p>
 
 A small helper application to display the focused window's title in polybar, or similar.
 
