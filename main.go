@@ -6,15 +6,21 @@ import (
 	"gopkg.in/yaml.v3"
 	"os"
 	"path"
+	"strings"
 )
 
-type MapConf []struct {
-	Class string `yaml:"class"`
-	Title string `yaml:"title"`
-	Icon  string `yaml:"icon"`
+type Config struct {
+	DefaultIcon string `yaml:"default_icon"`
+	Padding     int    `yaml:"padding"`
+
+	Mappings []struct {
+		Class string `yaml:"class"`
+		Title string `yaml:"title"`
+		Icon  string `yaml:"icon"`
+	}
 }
 
-var config MapConf
+var config Config
 
 func main() {
 	loadConfig()
@@ -31,18 +37,22 @@ func main() {
 }
 
 func getActiveWindowTitle(event *i3.WindowEvent) {
+	// one space is added here, to ensure that NF render correctly
+	padding := " " + strings.Repeat(" ", config.Padding)
 	title := event.Container.WindowProperties.Class
-	var icon string
+	icon := config.DefaultIcon + padding
 
-	for _, mapConf := range config {
+	for _, mapConf := range config.Mappings {
 		if mapConf.Class == title {
-			icon = mapConf.Icon
+			if len(mapConf.Icon) > 0 {
+				icon = mapConf.Icon + padding
+			}
 			title = mapConf.Title
 		}
 	}
 
-	fmt.Printf(`%s  %s`, icon, title)
-	fmt.Println()
+	v := fmt.Sprintf("%s%s", icon, title)
+	fmt.Println(v)
 }
 
 func loadConfig() {
