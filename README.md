@@ -17,7 +17,8 @@ It uses i3wm's official Go event subscription, so it updates instantly without p
 
 ## Installation
 
-Move it to one of your `bin` directories, which is in your `$PATH`.
+Download from [GitHub releases](https://github.com/nekowinston/i3-window-title/releases),
+and move it to one of your `bin` directories, which is in your `$PATH`.
 
 ## Configuration
 
@@ -28,6 +29,8 @@ The config file is YAML format, located in `~/.config/window_titles.yml`:
 default_icon: ﬓ
 # spaces to insert between the icon & window title
 padding: 1
+# auto-capitalize window titles, when they are not manually set.
+capitalize: true
 
 mappings:
 # class is the WM_CLASS, which you can get via xprop.
