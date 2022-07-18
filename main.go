@@ -12,6 +12,7 @@ import (
 type Config struct {
 	DefaultIcon string `yaml:"default_icon"`
 	Padding     int    `yaml:"padding"`
+	Capitalize  bool   `yaml:"capitalize"`
 
 	Mappings []struct {
 		Class string `yaml:"class"`
@@ -48,6 +49,8 @@ func getActiveWindowTitle(event *i3.WindowEvent) {
 				icon = mapConf.Icon + padding
 			}
 			title = mapConf.Title
+		} else if config.Capitalize {
+			title = strings.Title(title)
 		}
 	}
 
