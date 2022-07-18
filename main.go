@@ -44,7 +44,7 @@ func getActiveWindowTitle(event *i3.WindowEvent) {
 	icon := config.DefaultIcon + padding
 
 	for _, mapConf := range config.Mappings {
-		if mapConf.Class == title {
+		if strings.ToLower(mapConf.Class) == strings.ToLower(title) {
 			if len(mapConf.Icon) > 0 {
 				icon = mapConf.Icon + padding
 			}
