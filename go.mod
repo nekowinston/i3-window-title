@@ -1,4 +1,4 @@
-module window_title
+module i3-window-title
 
 go 1.17
 
