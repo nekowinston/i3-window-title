@@ -44,7 +44,7 @@ func init() {
 
 	err := viper.ReadInConfig()
 	if err != nil {
-		panic(fmt.Errorf("Fatal error config file: %s \n", err))
+		panic(fmt.Errorf("Fatal error config file: %s", err))
 	}
 
 	err = viper.Unmarshal(&config)
@@ -57,7 +57,6 @@ func init() {
 		viper.Unmarshal(&config)
 	})
 	viper.WatchConfig()
-	fmt.Println(config)
 }
 
 func main() {
