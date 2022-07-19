@@ -8,7 +8,7 @@
   <img alt="Downloads" src="https://img.shields.io/github/downloads/nekowinston/i3-window-title/total">
   <img alt="goreleaser" src="https://github.com/nekowinston/i3-window-title/actions/workflows/release.yml/badge.svg">
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-<a href='#contributors-'><img alt='All Contributors' src='https://img.shields.io/badge/all_contributors-1-orange.svg'/></a>
+<a href='#contributors-'><img alt='All Contributors' src='https://img.shields.io/badge/all_contributors-2-orange.svg'/></a>
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 </p>
 
@@ -79,10 +79,13 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://winston.sh/"><img src="https://avatars.githubusercontent.com/u/79978224?v=4?s=100" width="100px;" alt=""/><br /><sub><b>winston</b></sub></a><br /><a href="https://github.com/nekowinston/i3-window-title/commits?author=nekowinston" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/Aurn1ox"><img src="https://avatars.githubusercontent.com/u/87845319?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Aurn1ox</b></sub></a><br /><a href="#ideas-Aurn1ox" title="Ideas, Planning, & Feedback">🤔</a> <a href="#userTesting-Aurn1ox" title="User Testing">📓</a></td>
   </tr>
 </table>
+
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
