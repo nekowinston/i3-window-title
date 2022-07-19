@@ -84,6 +84,17 @@ func getActiveWindowTitle(event *i3.WindowEvent) {
 
 	var name string
 
+	// if the window was closed, check if it should display the workspace, if enabled
+	if config.Workspace.Enabled && event.Change == "close" {
+		totalNodes := len(event.Container.Nodes) + len(event.Container.FloatingNodes)
+
+		// only do so if it was the last window in the workspace
+		if totalNodes == 0 {
+			printOutput(config.Workspace.Icon, config.Workspace.Title)
+			return
+		}
+	}
+
 	// check if the wm class matches a mapping
 	for _, mapConf := range config.Mappings {
 		if strings.ToLower(mapConf.Class) == strings.ToLower(class) {
