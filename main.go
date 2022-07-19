@@ -67,11 +67,6 @@ func main() {
 		switch event.(type) {
 		case *i3.WindowEvent:
 			getActiveWindowTitle(event.(*i3.WindowEvent))
-
-			// NB: unsure if this is the best way to handle this:
-			// this skips to the next event, which is the WorkspaceEvent
-			// otherwise the default mapping would show up
-			subscription.Next()
 		case *i3.WorkspaceEvent:
 			// only handle this event if the default title is set
 			if config.Workspace.Enabled {
@@ -89,9 +84,9 @@ func getActiveWindowTitle(event *i3.WindowEvent) {
 
 	var name string
 
+	// check if the wm class matches a mapping
 	for _, mapConf := range config.Mappings {
 		if strings.ToLower(mapConf.Class) == strings.ToLower(class) {
-			// check if the wm class matches a mapping
 			// if there's an icon set, prepend it
 			if len(mapConf.Icon) > 0 {
 				icon = mapConf.Icon
@@ -100,21 +95,25 @@ func getActiveWindowTitle(event *i3.WindowEvent) {
 			if len(mapConf.Title) > 0 {
 				name = mapConf.Title
 			}
-			break
-		} else {
-			// if there's no mapping for the wm class, use the native title
-			name = title
-			// and finally, capitalize the title if set in the config
-			if config.Capitalize {
-				name = strings.Title(name)
-			}
+			printOutput(icon, name)
+			return
 		}
+	}
+
+	// use the native WM title if no mapping is found
+	name = title
+	// capitalize the title if set in the config
+	if config.Capitalize {
+		name = strings.Title(name)
 	}
 	printOutput(icon, name)
 }
 
 func showWorkspaceMapping(event *i3.WorkspaceEvent) {
-	if len(event.Current.Nodes) == 0 {
+	totalNodes := len(event.Current.Nodes) + len(event.Current.FloatingNodes)
+	focused := event.Current.Focused
+
+	if totalNodes == 0 && focused {
 		printOutput(config.Workspace.Icon, config.Workspace.Title)
 	}
 }
