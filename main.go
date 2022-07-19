@@ -13,7 +13,11 @@ type Config struct {
 	DefaultIcon string `yaml:"default_icon"`
 	Padding     int    `yaml:"padding"`
 	Capitalize  bool   `yaml:"capitalize"`
-
+	
+	Default struct {
+		Icon string `yaml:"icon"`
+		Title string `yaml:"title"`
+	}
 	Mappings []struct {
 		Class string `yaml:"class"`
 		Title string `yaml:"title"`
@@ -26,26 +30,32 @@ var config Config
 func main() {
 	loadConfig()
 
-	subscription := i3.Subscribe(i3.WindowEventType)
+	subscription := i3.Subscribe(i3.WindowEventType, i3.WorkspaceEventType)
 
 	for subscription.Next() {
 		event := subscription.Event()
 		switch event.(type) {
 		case *i3.WindowEvent:
 			getActiveWindowTitle(event.(*i3.WindowEvent))
+
+			// NB: unsure if this is the best way to handle this:
+			// this skips to the next event, which is the WorkspaceEvent
+			// otherwise the default mapping would show up
+			subscription.Next()
+		case *i3.WorkspaceEvent:
+			// only handle this event if the default title is set
+			if config.Default.Title != "" {
+				showDefaultMapping(event.(*i3.WorkspaceEvent))
+			}
 		}
 	}
 }
 
 func getActiveWindowTitle(event *i3.WindowEvent) {
-	// one space is added here, to ensure that NF render correctly
-	// and spaces after the icon are added, depending on the padding
-	padding := " " + strings.Repeat(" ", config.Padding)
 	// shorthands
 	class := event.Container.WindowProperties.Class
 	title := event.Container.WindowProperties.Title
-	// default to the default icon
-	icon := config.DefaultIcon + padding
+	icon := config.DefaultIcon
 
 	var name string
 
@@ -54,7 +64,7 @@ func getActiveWindowTitle(event *i3.WindowEvent) {
 			// check if the wm class matches a mapping
 			// if there's an icon set, prepend it
 			if len(mapConf.Icon) > 0 {
-				icon = mapConf.Icon + padding
+				icon = mapConf.Icon
 			}
 			// use the mapped title
 			if len(mapConf.Title) > 0 {
@@ -70,8 +80,21 @@ func getActiveWindowTitle(event *i3.WindowEvent) {
 			}
 		}
 	}
+	printOutput(icon, name)
+}
 
-	v := fmt.Sprintf("%s%s", icon, name)
+func showDefaultMapping(event *i3.WorkspaceEvent) {
+	if len(event.Current.Nodes) == 0 {
+		printOutput(config.Default.Icon, config.Default.Title)
+	}
+}
+
+func printOutput(icon string, title string) {
+	// one space is added here, to ensure that NF render correctly
+	// and spaces after the icon are added, depending on the padding
+	padding := " " + strings.Repeat(" ", config.Padding)
+	icon = icon + padding
+	v := fmt.Sprintf("%s%s", icon, title)
 	fmt.Println(v)
 }
 
