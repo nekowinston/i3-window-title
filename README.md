@@ -7,6 +7,9 @@
   <img alt="Go version" src="https://img.shields.io/github/go-mod/go-version/nekowinston/i3-window-title">
   <img alt="Downloads" src="https://img.shields.io/github/downloads/nekowinston/i3-window-title/total">
   <img alt="goreleaser" src="https://github.com/nekowinston/i3-window-title/actions/workflows/release.yml/badge.svg">
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+<a href='#contributors-'><img alt='All Contributors' src='https://img.shields.io/badge/all_contributors-1-orange.svg'/></a>
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 </p>
 
 A small helper application to display the focused window's title in polybar, or similar.
@@ -65,3 +68,21 @@ exec = i3-window-title
 ; important! this is required to only show the last printed line in the bar
 tail = true
 ```
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://winston.sh/"><img src="https://avatars.githubusercontent.com/u/79978224?v=4?s=100" width="100px;" alt=""/><br /><sub><b>winston</b></sub></a><br /><a href="https://github.com/nekowinston/i3-window-title/commits?author=nekowinston" title="Code">💻</a></td>
+  </tr>
+</table>
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

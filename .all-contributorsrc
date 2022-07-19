@@ -1,0 +1,26 @@
+{
+  "projectName": "i3-window-title",
+  "projectOwner": "nekowinston",
+  "repoType": "github",
+  "repoHost": "",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "nekowinston",
+      "name": "winston",
+      "avatar_url": "https://avatars.githubusercontent.com/u/79978224?v=4",
+      "profile": "https://winston.sh/",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "badgeTemplate": "<a href='#contributors-'><img alt='All Contributors' src='https://img.shields.io/badge/all_contributors-<%= contributors.length %>-orange.svg'/></a>"
+}
