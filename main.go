@@ -39,22 +39,39 @@ func main() {
 
 func getActiveWindowTitle(event *i3.WindowEvent) {
 	// one space is added here, to ensure that NF render correctly
+	// and spaces after the icon are added, depending on the padding
 	padding := " " + strings.Repeat(" ", config.Padding)
-	title := event.Container.WindowProperties.Class
+	// shorthands
+	class := event.Container.WindowProperties.Class
+	title := event.Container.WindowProperties.Title
+	// default to the default icon
 	icon := config.DefaultIcon + padding
 
+	var name string
+
 	for _, mapConf := range config.Mappings {
-		if strings.ToLower(mapConf.Class) == strings.ToLower(title) {
+		if strings.ToLower(mapConf.Class) == strings.ToLower(class) {
+			// check if the wm class matches a mapping
+			// if there's an icon set, prepend it
 			if len(mapConf.Icon) > 0 {
 				icon = mapConf.Icon + padding
 			}
-			title = mapConf.Title
-		} else if config.Capitalize {
-			title = strings.Title(title)
+			// use the mapped title
+			if len(mapConf.Title) > 0 {
+				name = mapConf.Title
+			}
+			break
+		} else {
+			// if there's no mapping for the wm class, use the native title
+			name = title
+			// and finally, capitalize the title if set in the config
+			if config.Capitalize {
+				name = strings.Title(name)
+			}
 		}
 	}
 
-	v := fmt.Sprintf("%s%s", icon, title)
+	v := fmt.Sprintf("%s%s", icon, name)
 	fmt.Println(v)
 }
 
