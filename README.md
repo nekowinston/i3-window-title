@@ -32,8 +32,18 @@ padding: 1
 # auto-capitalize window titles, when they are not manually set.
 capitalize: true
 
+# show workspace info, when no window is focused.
+workspace:
+  # turning this off will always show the last window title
+  enabled: true 
+  # icon and title mapping for the workspace placeholder
+  icon: ﬓ
+  title: Desktop
+
+# mappings for each application
 mappings:
 # class is the WM_CLASS, which you can get via xprop.
+# NB: you can ignore casing, it doesn't matter if lower/uppercase
 - class: org.wezfurlong.wezterm
   title: WezTerm
   icon: 
