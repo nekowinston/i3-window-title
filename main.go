@@ -2,34 +2,65 @@ package main
 
 import (
 	"fmt"
+	"github.com/fsnotify/fsnotify"
+	"github.com/spf13/viper"
 	"go.i3wm.org/i3/v4"
-	"gopkg.in/yaml.v3"
-	"os"
-	"path"
 	"strings"
 )
 
 type Config struct {
-	DefaultIcon string `yaml:"default_icon"`
-	Padding     int    `yaml:"padding"`
-	Capitalize  bool   `yaml:"capitalize"`
-	
-	Default struct {
-		Icon string `yaml:"icon"`
-		Title string `yaml:"title"`
+	DefaultIcon string `mapstructure:"default_icon"`
+	Padding     int
+	Capitalize  bool
+
+	Workspace struct {
+		Enabled bool
+		Icon    string
+		Title   string
 	}
 	Mappings []struct {
-		Class string `yaml:"class"`
-		Title string `yaml:"title"`
-		Icon  string `yaml:"icon"`
+		Class string
+		Title string
+		Icon  string
 	}
 }
 
 var config Config
 
-func main() {
-	loadConfig()
+func init() {
+	viper.SetConfigName("window_titles")
+	viper.SetConfigType("yaml")
 
+	viper.AddConfigPath("$XDG_CONFIG_HOME")
+	viper.AddConfigPath("$HOME/.config")
+	viper.AddConfigPath(".")
+
+	viper.SetDefault("default_icon", "ﬓ")
+	viper.SetDefault("padding", 1)
+	viper.SetDefault("capitalize", false)
+	viper.SetDefault("workspace.enabled", true)
+	viper.SetDefault("workspace.icon", "ﬓ")
+	viper.SetDefault("workspace.title", "Desktop")
+
+	err := viper.ReadInConfig()
+	if err != nil {
+		panic(fmt.Errorf("Fatal error config file: %s \n", err))
+	}
+
+	err = viper.Unmarshal(&config)
+	if err != nil {
+		fmt.Println("Could not read config file:", err)
+	}
+
+	// update on config file change
+	viper.OnConfigChange(func(e fsnotify.Event) {
+		viper.Unmarshal(&config)
+	})
+	viper.WatchConfig()
+	fmt.Println(config)
+}
+
+func main() {
 	subscription := i3.Subscribe(i3.WindowEventType, i3.WorkspaceEventType)
 
 	for subscription.Next() {
@@ -44,8 +75,8 @@ func main() {
 			subscription.Next()
 		case *i3.WorkspaceEvent:
 			// only handle this event if the default title is set
-			if config.Default.Title != "" {
-				showDefaultMapping(event.(*i3.WorkspaceEvent))
+			if config.Workspace.Enabled {
+				showWorkspaceMapping(event.(*i3.WorkspaceEvent))
 			}
 		}
 	}
@@ -83,9 +114,9 @@ func getActiveWindowTitle(event *i3.WindowEvent) {
 	printOutput(icon, name)
 }
 
-func showDefaultMapping(event *i3.WorkspaceEvent) {
+func showWorkspaceMapping(event *i3.WorkspaceEvent) {
 	if len(event.Current.Nodes) == 0 {
-		printOutput(config.Default.Icon, config.Default.Title)
+		printOutput(config.Workspace.Icon, config.Workspace.Title)
 	}
 }
 
@@ -96,24 +127,4 @@ func printOutput(icon string, title string) {
 	icon = icon + padding
 	v := fmt.Sprintf("%s%s", icon, title)
 	fmt.Println(v)
-}
-
-func loadConfig() {
-	// get XDG_CONFIG_HOME, fallback to $HOME/.config
-	home := os.Getenv("XDG_CONFIG_HOME")
-	if len(home) == 0 {
-		home = os.Getenv("HOME") + "/.config"
-	}
-
-	r, err := os.Open(path.Join(home, "window_titles.yml"))
-	if err != nil {
-		fmt.Println("Could not open config file:", err)
-	}
-	defer r.Close()
-
-	decoder := yaml.NewDecoder(r)
-	err = decoder.Decode(&config)
-	if err != nil {
-		fmt.Println("Could not decode config file:", err)
-	}
 }
