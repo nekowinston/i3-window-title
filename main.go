@@ -105,6 +105,8 @@ func getActiveWindowTitle(event *i3.WindowEvent) {
 			// use the mapped title
 			if len(mapConf.Title) > 0 {
 				name = mapConf.Title
+			} else {
+				name = title
 			}
 			printOutput(icon, name)
 			return
