@@ -47,15 +47,31 @@ workspace:
 mappings:
 # class is the WM_CLASS, which you can get via xprop.
 # NB: you can ignore casing, it doesn't matter if lower/uppercase
-- class: org.wezfurlong.wezterm
-  title: WezTerm
-  icon: 
 - class: firefox
   title: Firefox
   icon: 
 - class: Pcmanfm
   title: PCManFM
   icon: 
+- class: org.wezfurlong.wezterm
+  title: WezTerm
+  # you can use YAML anchors, to use icons again...
+  icon: &term 
+- class: kitty
+  # ...like this:
+  icon: *term
+  title: Kitty
+  # if this is enabled, the native title is shown,
+  # as well as the mapped title.
+  # e.g. Kitty [~/]
+  show_native_title: true
+
+# you can customize the separators for the
+# 'show_native_title' titles. the conf below would show:
+# 'Kitty (~/)' instead of 'Kitty [~/]'
+native_title_separators:
+  start: "("
+  end: ")"
 ```
 
 ## Usage (polybar)

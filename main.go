@@ -19,10 +19,16 @@ type Config struct {
 		Title   string
 	}
 	Mappings []struct {
-		Class string
-		Title string
-		Icon  string
+		Class           string
+		Title           string
+		Icon            string
+		ShowNativeTitle bool `mapstructure:"show_native_title"`
 	}
+
+	NativeTitleSeparators struct {
+		Start string
+		End   string
+	} `mapstructure:"native_title_separators"`
 }
 
 var config Config
@@ -41,6 +47,8 @@ func init() {
 	viper.SetDefault("workspace.enabled", true)
 	viper.SetDefault("workspace.icon", "ﬓ")
 	viper.SetDefault("workspace.title", "Desktop")
+	viper.SetDefault("native_title_separators.start", "[")
+	viper.SetDefault("native_title_separators.end", "]")
 
 	err := viper.ReadInConfig()
 	if err != nil {
@@ -105,6 +113,10 @@ func getActiveWindowTitle(event *i3.WindowEvent) {
 			// use the mapped title
 			if len(mapConf.Title) > 0 {
 				name = mapConf.Title
+				if mapConf.ShowNativeTitle {
+					s := config.NativeTitleSeparators
+					name = fmt.Sprintf("%s %s%s%s", name, s.Start, title, s.End)
+				}
 			} else {
 				name = title
 			}
